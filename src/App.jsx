@@ -23,126 +23,162 @@ import HaLoginPage from "./security/LoginPage";
 import promotions from "./operations/promotions/index.tsx";
 import course from "./operations/course/index.tsx";
 
+import {BrowserRouter, Routes} from "react-router-dom";
+import AuthCallback from "./security/CasdoorAuth.tsx";
+
 function AppBase() {
   return (
-    <Admin
-      title="HEI Admin"
-      authProvider={authProvider}
-      dataProvider={dataProvider}
-      i18nProvider={polyglotI18nProvider(() => frenchMessages, "fr")}
-      loginPage={HaLoginPage}
-      theme={mainTheme}
-      layout={HaLayout}
-      requireAuth
-    >
-      <Resource name="profile" {...profile} />
-      <Resource name="students" {...students} />
-      <Resource name="teachers" {...teachers} />
-      <Resource name="groups" {...groups} />
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="callback"
+          element={
+            // <AuthCallback
+            //   sdk={CasdoorSetting.CasdoorSDK}
+            //   serverUrl={CasdoorSetting.ServerUrl}
+            //   saveTokenFromResponse={(res) => {
+            //     CasdoorSetting.setToken(res?.data);
+            //     CasdoorSetting.goToLink("/");
+            //   }}
+            //   isGetTokenSuccessful={(res) => res?.status === "ok"}
+            // />
+            //<div>test ok</div>\
+            <AuthCallback />
+          }
+        />
+        <Route
+          path="*"
+          element={
+            <Admin
+              title="HEI Admin"
+              authProvider={authProvider}
+              dataProvider={dataProvider}
+              i18nProvider={polyglotI18nProvider(() => frenchMessages, "fr")}
+              loginPage={HaLoginPage}
+              theme={mainTheme}
+              layout={HaLayout}
+              requireAuth
+            >
+              <Resource name="profile" {...profile} />
+              <Resource name="students" {...students} />
+              <Resource name="teachers" {...teachers} />
+              <Resource name="groups" {...groups} />
 
-      <Resource name="fees" {...fees} />
-      <Resource name="fees-templates" {...feesTemplates} />
-      <Resource name="payments" {...payments} />
-      <Resource name="docs" options={{label: "Documents"}} />
-      <Resource name="comments" />
-      <Resource name="promotions-groups" />
-      <Resource name="promotions" {...promotions} />
-      <Resource name="announcements" {...announcements} />
-      <Resource name="course" {...course} />
+              <Resource name="fees" {...fees} />
+              <Resource name="fees-templates" {...feesTemplates} />
+              <Resource name="payments" {...payments} />
+              <Resource name="docs" options={{label: "Documents"}} />
+              <Resource name="comments" />
+              <Resource name="promotions-groups" />
+              <Resource name="promotions" {...promotions} />
+              <Resource name="announcements" {...announcements} />
+              <Resource name="course" {...course} />
 
-      <CustomRoutes>
-        <Route exact path="/profile" element={<profile.show />} />
+              <CustomRoutes>
+                <Route exact path="/profile" element={<profile.show />} />
 
-        <Route exact path="/students/:studentId/fees" element={<fees.list />} />
-        <Route
-          exact
-          path="/students/:studentId/fees/create"
-          element={<fees.create />}
-        />
-        <Route exact path="/fees/:feeId/show" element={<fees.show />} />
-        <Route exact path="/fees" element={<fees.listByStatus />} />
+                <Route
+                  exact
+                  path="/students/:studentId/fees"
+                  element={<fees.list />}
+                />
+                <Route
+                  exact
+                  path="/students/:studentId/fees/create"
+                  element={<fees.create />}
+                />
+                <Route exact path="/fees/:feeId/show" element={<fees.show />} />
+                <Route exact path="/fees" element={<fees.listByStatus />} />
 
-        <Route exact path="/fees/:feeId/payments" element={<payments.list />} />
-        <Route
-          exact
-          path="/fees/:feeId/payments/create"
-          element={<payments.create />}
-        />
+                <Route
+                  exact
+                  path="/fees/:feeId/payments"
+                  element={<payments.list />}
+                />
+                <Route
+                  exact
+                  path="/fees/:feeId/payments/create"
+                  element={<payments.create />}
+                />
 
-        <Route
-          exact
-          path="/transactions"
-          element={<fees.listByTransactions />}
-        />
+                <Route
+                  exact
+                  path="/transactions"
+                  element={<fees.listByTransactions />}
+                />
 
-        <Route
-          exact
-          path="/docs/students/TRANSCRIPT"
-          element={<studentDocs.list />}
-        />
-        <Route
-          exact
-          path="/docs/students/TRANSCRIPT/:id"
-          element={<studentDocs.show />}
-        />
-        <Route
-          exact
-          path="/docs/students/OTHER"
-          element={<studentDocs.list />}
-        />
-        <Route
-          exact
-          path="/docs/students/WORK_DOCUMENT"
-          element={<studentDocs.list />}
-        />
+                <Route
+                  exact
+                  path="/docs/students/TRANSCRIPT"
+                  element={<studentDocs.list />}
+                />
+                <Route
+                  exact
+                  path="/docs/students/TRANSCRIPT/:id"
+                  element={<studentDocs.show />}
+                />
+                <Route
+                  exact
+                  path="/docs/students/OTHER"
+                  element={<studentDocs.list />}
+                />
+                <Route
+                  exact
+                  path="/docs/students/WORK_DOCUMENT"
+                  element={<studentDocs.list />}
+                />
 
-        <Route
-          exact
-          path="/students/:studentId/docs/students/OTHER"
-          element={<studentDocs.list />}
+                <Route
+                  exact
+                  path="/students/:studentId/docs/students/OTHER"
+                  element={<studentDocs.list />}
+                />
+                <Route
+                  exact
+                  path="/students/:studentId/docs/students/WORK_DOCUMENT"
+                  element={<studentDocs.list />}
+                />
+                <Route
+                  exact
+                  path="/students/:studentId/docs/students/TRANSCRIPT"
+                  element={<studentDocs.list />}
+                />
+                <Route
+                  exact
+                  path="/students/:studentId/docs/students/TRANSCRIPT/:id"
+                  element={<studentDocs.show />}
+                />
+                <Route
+                  exact
+                  path="/docs/students/TRANSCRIPT/:id"
+                  element={<studentDocs.show />}
+                />
+                <Route
+                  exact
+                  path="/students/:studentId/docs/students/OTHER/:id"
+                  element={<studentDocs.show />}
+                />
+                <Route
+                  exact
+                  path="/docs/students/OTHER/:id"
+                  element={<studentDocs.show />}
+                />
+                <Route
+                  exact
+                  path="/students/:studentId/docs/students/WORK_DOCUMENT/:id"
+                  element={<studentDocs.show />}
+                />
+                <Route
+                  exact
+                  path="/docs/students/WORK_DOCUMENT/:id"
+                  element={<studentDocs.show />}
+                />
+              </CustomRoutes>
+            </Admin>
+          }
         />
-        <Route
-          exact
-          path="/students/:studentId/docs/students/WORK_DOCUMENT"
-          element={<studentDocs.list />}
-        />
-        <Route
-          exact
-          path="/students/:studentId/docs/students/TRANSCRIPT"
-          element={<studentDocs.list />}
-        />
-        <Route
-          exact
-          path="/students/:studentId/docs/students/TRANSCRIPT/:id"
-          element={<studentDocs.show />}
-        />
-        <Route
-          exact
-          path="/docs/students/TRANSCRIPT/:id"
-          element={<studentDocs.show />}
-        />
-        <Route
-          exact
-          path="/students/:studentId/docs/students/OTHER/:id"
-          element={<studentDocs.show />}
-        />
-        <Route
-          exact
-          path="/docs/students/OTHER/:id"
-          element={<studentDocs.show />}
-        />
-        <Route
-          exact
-          path="/students/:studentId/docs/students/WORK_DOCUMENT/:id"
-          element={<studentDocs.show />}
-        />
-        <Route
-          exact
-          path="/docs/students/WORK_DOCUMENT/:id"
-          element={<studentDocs.show />}
-        />
-      </CustomRoutes>
-    </Admin>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
