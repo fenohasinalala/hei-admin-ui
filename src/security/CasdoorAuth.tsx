@@ -8,6 +8,7 @@ import {
   //showMessage,
 } from "./setting";
 import {Whoami} from "@haapi/typescript-client";
+import {LoadingPage} from "react-admin";
 
 const AuthCallback: React.FC = () => {
   const location = useLocation();
@@ -56,7 +57,12 @@ const AuthCallback: React.FC = () => {
     });
   }, [location]);
 
-  return <div>Loading...</div>;
+  return (
+    <LoadingPage
+      loadingPrimary="Chargement"
+      loadingSecondary="La page est en cours de chargement, merci de bien vouloir patienter."
+    />
+  );
 };
 
 export default AuthCallback;
