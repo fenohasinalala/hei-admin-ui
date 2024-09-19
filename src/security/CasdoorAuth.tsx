@@ -30,7 +30,7 @@ const AuthCallback: React.FC = () => {
 
   const setSession = (token: string) => {
     setToken(token);
-    return fetch(`${ServerUrl}/whoami`, {
+    fetch(`${ServerUrl}/whoami`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -39,8 +39,12 @@ const AuthCallback: React.FC = () => {
       .then((res) => res.json())
       .then((whoami) => {
         cacheWhoami(whoami);
-        goToLink("/");
         clearToken();
+        goToLink("/");
+      })
+      .catch((error) => {
+        clearToken();
+        goToLink("/");
       });
   };
 
