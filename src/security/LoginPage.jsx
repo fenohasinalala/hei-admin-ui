@@ -1,4 +1,6 @@
 import {Login} from "react-admin";
+import { isSilentSigninRequired, SilentSignin } from "casdoor-react-sdk";
+
 import {
   Card,
   CardContent,
@@ -16,7 +18,7 @@ import authProvider from "../providers/authProvider";
 import {useState} from "react";
 import ForgotPassword from "./ForgotPassword";
 import ConfirmForgotPassword from "./ConfirmForgotPassword";
-import {getRedirectUrl, showMessage, goToLink} from "./setting";
+import { getRedirectUrl, showMessage, goToLink, CasdoorSDK, isLoggedIn } from "./setting";
 
 const casdoorLogin = () => {
   getRedirectUrl().then((res) => {
@@ -31,6 +33,21 @@ const casdoorLogin = () => {
 const aCard = (title, subtitle, description1, description2, course) => {
   const syllabus =
     "https://drive.google.com/file/d/12Lc4o3jfQOFHIzazPToO2hnGZc8epU3I/view";
+
+  if (isSilentSigninRequired()) {
+    return (
+      <div style={{marginTop: 200, textAlign: "center", alignItems: "center"}}>
+        <SilentSignin
+          sdk={CasdoorSDK}
+          isLoggedIn={isLoggedIn}
+          handleReceivedSilentSigninSuccessEvent={() => goToLink("/")}
+          handleReceivedSilentSigninFailureEvent={() => {}}
+        />
+        <p>Logging in...</p>
+      </div>
+    );
+  }
+
   return (
     <Card style={{backgroundColor: "#ffffff", opacity: 0.9}}>
       <CardContent>
@@ -108,7 +125,6 @@ const HaLoginPage = () => {
           }}
           position={"absolute"}
         >
-
           <div
             style={{
               textAlign: "center",

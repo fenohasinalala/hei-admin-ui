@@ -24,6 +24,7 @@
     "aws-amplify": "^6.0.28",
     "axios": "^1.6.8",
     "casdoor-js-sdk": "^0.14.0",
+    "casdoor-react-sdk": "^1.2.0",
     "dotenv": "^16.4.5",
     "mime": "^4.0.3",
     "ra-language-french": "^4.16.15",

@@ -27,7 +27,8 @@ const sdkConfig = {
 export const CasdoorSDK = new Sdk(sdkConfig);
 
 export const isLoggedIn = () => {
-  const token = localStorage.getItem("token");
+  //const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("bearerItem");
   return token !== null && token.length > 0;
 };
 
