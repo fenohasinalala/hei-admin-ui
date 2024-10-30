@@ -9,7 +9,7 @@ import {
   Toolbar,
   SaveButton,
 } from "react-admin";
-import {Box, Typography} from "@mui/material";
+import {Box, Typography, Backdrop, CircularProgress} from "@mui/material";
 import {Dialog} from "@/ui/components";
 import {CreateLettersDialogProps} from "@/operations/letters/types";
 import {useNotify} from "@/hooks";
@@ -43,9 +43,12 @@ const FILE_FIELD_STYLE = {
   },
 };
 
-const CustomToolbar: React.FC<{handleSave: () => void}> = ({handleSave}) => (
+const CustomToolbar: React.FC<{handleSave: () => void; isloading: boolean}> = ({
+  handleSave,
+  isloading,
+}) => (
   <Toolbar>
-    <SaveButton label="Enregistrer" onClick={handleSave} />
+    <SaveButton label="Enregistrer" disabled={isloading} onClick={handleSave} />
   </Toolbar>
 );
 
@@ -61,13 +64,14 @@ export const CreateLettersDialog: FC<CreateLettersDialogProps> = ({
   const notify = useNotify();
   const [confirmOpen, setConfirmOpen] = useState(false);
   const letterRef = useRef<any>(null);
-  const [create] = useCreate();
+  const [create, {isLoading}] = useCreate();
   const [fileInfo, setFileInfo] = useState<{name: string; size: number} | null>(
     null
   );
   const [isFileTooLarge, setIsFileTooLarge] = useState(false);
 
   const handleConfirm = () => {
+    setConfirmOpen(false);
     if (letterRef.current) {
       create(
         "student-letters",
@@ -83,12 +87,13 @@ export const CreateLettersDialog: FC<CreateLettersDialogProps> = ({
           },
           onError: () => {
             setFileInfo(null);
-            notify("Erreur lors de la création de la lettre", {type: "error"});
+            notify("Erreur lors de la création de la lettre", {
+              type: "error",
+            });
           },
         }
       );
     }
-    setConfirmOpen(false);
   };
 
   const formatFileSize = (bytes: number): string => {
@@ -99,7 +104,6 @@ export const CreateLettersDialog: FC<CreateLettersDialogProps> = ({
     }
     return `${(kb / 1024).toFixed(2)} Mo`;
   };
-
   return (
     <Dialog
       open={isOpen}
@@ -107,12 +111,23 @@ export const CreateLettersDialog: FC<CreateLettersDialogProps> = ({
       title={title ?? "Ajouter une lettre"}
       data-testid="add-letter"
     >
+      {isLoading && (
+        <Backdrop sx={{zIndex: 10}} open={isOpen}>
+          <CircularProgress
+            sx={{
+              color: "white",
+            }}
+          />
+        </Backdrop>
+      )}
+      ;
       <SimpleForm
         toolbar={
           <CustomToolbar
             handleSave={() => {
               setConfirmOpen(true);
             }}
+            isloading={isLoading}
           />
         }
         values={useMemo(
@@ -205,7 +220,6 @@ export const CreateLettersDialog: FC<CreateLettersDialogProps> = ({
           </Typography>
         )}
       </SimpleForm>
-
       <Confirm
         isOpen={confirmOpen}
         title="Confirmation"
