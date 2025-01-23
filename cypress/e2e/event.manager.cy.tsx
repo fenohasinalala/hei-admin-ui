@@ -72,11 +72,12 @@ describe("Manager.event", () => {
   it("manager can edit event", () => {
     cy.contains("Listes").click();
     cy.contains("Editer").first().click();
-    cy.getByTestid("event-title").type("Change title");
+    cy.getByTestid("event-title").click();
+    cy.get('[data-value="Pi"]').click();
     cy.contains("Enregistrer").click();
   });
 
-  it.only("manager can list & change status event participant", () => {
+  it("manager can list & change status event participant", () => {
     cy.contains("Listes").click();
     cy.get("#event-show").click({force: true});
     cy.wait("@getEventParticipantPage1");
@@ -96,7 +97,7 @@ describe("Manager.event", () => {
 
   it("manager can add group", () => {
     cy.contains("Listes").click();
-    cy.contains("Présence").click();
+    cy.get("#event-show").click({force: true});
     cy.wait("@getEventParticipantPage1");
     cy.getByTestid("menu-list-action").click();
     cy.contains("Ajout groupe").click();
