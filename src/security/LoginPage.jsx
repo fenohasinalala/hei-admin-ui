@@ -1,5 +1,5 @@
 import {Login} from "react-admin";
-import { isSilentSigninRequired, SilentSignin } from "casdoor-react-sdk";
+import {isSilentSigninRequired, SilentSignin} from "casdoor-react-sdk";
 
 import {
   Card,
@@ -10,7 +10,7 @@ import {
   Modal,
   Box,
   Link,
-  Button as MuiButton
+  Button as MuiButton,
 } from "@mui/material";
 import {mainTheme} from "../haTheme";
 import CompletePasswordPage from "./CompletePasswordPage";
@@ -18,7 +18,13 @@ import authProvider from "../providers/authProvider";
 import {useState} from "react";
 import ForgotPassword from "./ForgotPassword";
 import ConfirmForgotPassword from "./ConfirmForgotPassword";
-import { getRedirectUrl, showMessage, goToLink, CasdoorSDK, isLoggedIn } from "./setting";
+import {
+  getRedirectUrl,
+  showMessage,
+  goToLink,
+  CasdoorSDK,
+  isLoggedIn,
+} from "./setting";
 
 const casdoorLogin = () => {
   getRedirectUrl().then((res) => {
