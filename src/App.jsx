@@ -30,8 +30,32 @@ import {Route} from "react-router-dom";
 import awardedCourses from "./operations/awardedCourses";
 import staffMembers from "./operations/staffMembers";
 
+import {BrowserRouter, Routes} from "react-router-dom";
+import AuthCallback from "./security/CasdoorAuth.tsx";
+
 function AppBase() {
   return (
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="callback"
+          element={
+            // <AuthCallback
+            //   sdk={CasdoorSetting.CasdoorSDK}
+            //   serverUrl={CasdoorSetting.ServerUrl}
+            //   saveTokenFromResponse={(res) => {
+            //     CasdoorSetting.setToken(res?.data);
+            //     CasdoorSetting.goToLink("/");
+            //   }}
+            //   isGetTokenSuccessful={(res) => res?.status === "ok"}
+            // />
+            //<div>test ok</div>\
+            <AuthCallback />
+          }
+        />
+        <Route
+          path="*"
+          element={
     <Admin
       title="HEI Admin"
       authProvider={authProvider}
@@ -247,6 +271,10 @@ function AppBase() {
         />
       </CustomRoutes>
     </Admin>
+              }
+        />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
