@@ -53,6 +53,7 @@ Cypress.Commands.add("login", (options: LoginConfig) => {
   const {role, success: isSuccess = true} = options;
   const defaultUserConnected = getUserConnected(role);
   const user = options.user || defaultUserConnected.user;
+  let attemptConnection = false;
 
   const whoami: Whoami = {
     id: user.id,
@@ -67,24 +68,48 @@ Cypress.Commands.add("login", (options: LoginConfig) => {
   cy.intercept("POST", "https://cognito-idp.eu-west-3.amazonaws.com").as(
     "postCognito"
   );
+  cy.intercept("**/whoami", (req) => {
+    if (attemptConnection) {
+      return req.reply({...req, body: whoami, statusCode: 200});
+    }
+    return req.reply({...req, statusCode: 403});
+  }).as("getWhoami");
+
   cy.visit("/login");
 
   // have to click 'cause of MUI input style
   cy.get("#username")
-    .click()
+    .clear()
     .type(options.username || defaultUserConnected.username);
-
-  isSuccess && cy.intercept("**/whoami", whoami).as("getWhoami");
   cy.get("#password")
-    .click()
+    .clear()
     .type(options.password || defaultUserConnected.password);
-  cy.get("button").contains("Connexion", {timeout: 10000}).click();
+  cy.get("button")
+    .contains("Connexion", {timeout: 10000})
+    .click()
+    .then(() => {
+      attemptConnection = true;
+    });
 
-  cy.wait("@postCognito");
   cy.wait("@postCognito");
 
   if (isSuccess) {
     cy.wait("@getWhoami");
     cy.wait("@getProfile");
   }
+
+  cy.intercept(
+    {
+      url: /.*awswaf.*telemetry.*/, // Match any URL containing 'awswaf' and 'telemetry'
+      method: "POST",
+    },
+    {
+      statusCode: 200,
+      body: {
+        token: "dummy_token",
+        next_interval: 100,
+        awswaf_session_storage: "awswaf_dummy_session_storage_key",
+      },
+    }
+  ).as("awsWafTelemetry");
 });
