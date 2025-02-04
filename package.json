@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "casdoor-js-sdk": "^0.14.0",
+    "casdoor-react-sdk": "^1.2.0",
     "@haapi/typescript-client": "^1.93.0",
     "@mui/x-date-pickers": "^7.21.0",
     "@react-admin/ra-calendar": "^4.0.1",
