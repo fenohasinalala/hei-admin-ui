@@ -150,6 +150,7 @@ const HaLoginPage = () => {
               onClick={() => casdoorLogin()}
               variant="contained"
               color="secondary"
+              data-testid="casdoor-login-btn"
               style={{
                 display: "flex",
                 justifySelf: "center",
