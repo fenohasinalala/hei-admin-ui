@@ -31,32 +31,11 @@ import awardedCourses from "./operations/awardedCourses";
 import staffMembers from "./operations/staffMembers";
 import {AwsWafCaptchaHandler, HumanVerification} from "./security/waf";
 
-import {BrowserRouter, Routes} from "react-router-dom";
 import AuthCallback from "./security/CasdoorAuth.tsx";
 
 function AppBase() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path="callback"
-          element={
-            // <AuthCallback
-            //   sdk={CasdoorSetting.CasdoorSDK}
-            //   serverUrl={CasdoorSetting.ServerUrl}
-            //   saveTokenFromResponse={(res) => {
-            //     CasdoorSetting.setToken(res?.data);
-            //     CasdoorSetting.goToLink("/");
-            //   }}
-            //   isGetTokenSuccessful={(res) => res?.status === "ok"}
-            // />
-            //<div>test ok</div>\
-            <AuthCallback />
-          }
-        />
-        <Route
-          path="*"
-          element={
+
     <Admin
       title="HEI Admin"
       authProvider={authProvider}
@@ -272,10 +251,7 @@ function AppBase() {
         />
       </CustomRoutes>
     </Admin>
-              }
-        />
-      </Routes>
-    </BrowserRouter>
+
   );
 }
 
@@ -285,6 +261,22 @@ function App() {
       <BrowserRouter>
         <AwsWafCaptchaHandler />
         <Routes>
+          <Route
+          path="callback"
+          element={
+            // <AuthCallback
+            //   sdk={CasdoorSetting.CasdoorSDK}
+            //   serverUrl={CasdoorSetting.ServerUrl}
+            //   saveTokenFromResponse={(res) => {
+            //     CasdoorSetting.setToken(res?.data);
+            //     CasdoorSetting.goToLink("/");
+            //   }}
+            //   isGetTokenSuccessful={(res) => res?.status === "ok"}
+            // />
+            //<div>test ok</div>\
+            <AuthCallback />
+          }
+        />
           <Route path="/human-verification" element={<HumanVerification />} />
           <Route path="*" element={<AppBase />} />
         </Routes>
